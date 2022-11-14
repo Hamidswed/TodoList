@@ -1,0 +1,105 @@
+*{
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+body{
+  background-color: lightgray;
+  display: flex;
+  justify-content: center;
+}
+.title{
+  text-align: center;
+  margin-bottom: 20px;
+}
+.section{
+  margin-top: 5rem;
+  background-color: #fff;
+  box-shadow: 5px 5px 25px gray ;
+  padding: 30px 50px;
+  border-radius: 10px;
+  width: 60%;
+}
+#box1{
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+#not-start-box{
+  width: 10px;
+  height: 60px;
+  background-color: brown;
+  margin-right: 10px;
+}
+
+#box2{
+  display: flex;
+  align-items: center;
+}
+#in-prog-box{
+  width: 10px;
+  height: 60px;
+  background-color: rgb(239, 164, 51);
+  margin-right: 10px;
+}
+
+#box3{
+  display: flex;
+  align-items: center;
+}
+#done-box{
+  width: 10px;
+  height: 60px;
+  background-color: rgb(83, 165, 42);
+  margin-right: 10px;
+}
+
+.del-btn{
+  background-color: rgb(214, 33, 33);
+  padding: 7px 20px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  transition: .2s ease-in-out;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.del-btn:hover{
+  background-color: brown;
+}
+
+#new-start{
+  display: flex;
+  height: 60px;
+  width: 55%;
+  background-color: #fff;
+  align-items: center;
+  border-radius: 10px;
+}
+#input-text{
+  border: none;
+  outline: none;
+  border-bottom: 2px solid gray;
+  margin-right: 10px;
+  padding: 5px 10px;
+}
+#input-date{
+  border: none;
+  outline: none;
+  border-bottom: 2px solid gray;
+  margin-right: 10px;
+  padding: 5px 10px;
+}
+#btn{
+  background-color:#4361ee ;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-left: 20px;
+  cursor: pointer;
+  transition: .3s ease-in-out;
+}
+#btn:hover{
+  background-color: #3a0ca3;
+}
