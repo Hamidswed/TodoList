@@ -4,39 +4,38 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <title>To do list</title>
   </head>
   <body>
     <section class="section">
-    <h1 class="title">To do list</h1>
-    <form action="">
-      <label for="">Task name:</label>
-      <input type="text" id="input-text" placeholder="Enter task name...">
-      <label for="">Date:</label>
-      <input type="date" id="input-date">
-      <label for="">Status:</label>
-      <select name="" id="input-option">
-        <option value="Not started">Not started</option>
-        <option value="In progress">In progress</option>
-        <option value="Done">Done</option>
-      </select>
-      <input type="submit" name="" id="btn" value="Add a new Todo">
-    </form>
-    <label>List here:</label>
-    <div id="box1">
-      <p id="not-start-box"></p>
-      <p id="not-start">Not started</p>
-    </div>
-    <div id="box2">
-      <p id="in-prog-box"></p>
-      <p id="in-prog">In progress</p>
-    </div>
-    <div id="box3">
-      <p id="done-box"></p>
-      <p id="done">Done</p>
-    </div>
-  </section>
+      <h1 class="title">To do list</h1>
+      <form action="">
+        <label>Task name:</label>
+        <input type="text" id="input-text" placeholder="Enter task name..." />
+        <label>Date:</label>
+        <input type="date" id="input-date" />
+        <label>Status:</label>
+        <select name="" id="input-status">
+          <option value="not-started">Not started</option>
+          <option value="in-progress">In progress</option>
+          <option value="done">Done</option>
+        </select>
+        <input type="submit" id="btn" value="Add a new Todo" />
+      </form>
+      <label>List here:</label>
+
+      <div id="todoList"></div>
+      <div id="box1">
+        <p id="not-start">Not started</p>
+      </div>
+      <div id="box2">
+        <p id="in-prog">In progress</p>
+      </div>
+      <div id="box3">
+        <p id="done">Done</p>
+      </div>
+    </section>
   </body>
   <script src="javascript.js"></script>
 </html>
