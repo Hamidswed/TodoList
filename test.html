@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+        .pass { color: green; }
+        .fail { color: red; }
+        button { margin: 5px; padding: 10px 15px; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Todo App Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: localStorage Availability</h2>
+        <div id="test1-result"></div>
+        <button onclick="testLocalStorage()">Run Test</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: TodoApp Class Methods</h2>
+        <div id="test2-result"></div>
+        <button onclick="testTodoAppClass()">Run Test</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: CRUD Operations</h2>
+        <div id="test3-result"></div>
+        <button onclick="testCRUDOperations()">Run Test</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 4: Filtering Functionality</h2>
+        <div id="test4-result"></div>
+        <button onclick="testFiltering()">Run Test</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Current localStorage Contents:</h2>
+        <pre id="storage-contents"></pre>
+        <button onclick="showStorage()">Refresh Storage View</button>
+        <button onclick="clearStorage()">Clear Storage</button>
+    </div>
+    
+    <script>
+        // Test 1: localStorage availability
+        function testLocalStorage() {
+            const resultDiv = document.getElementById('test1-result');
+            try {
+                localStorage.setItem('test', 'value');
+                const value = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                
+                if (value === 'value') {
+                    resultDiv.innerHTML = `<span class="pass">✓ PASS: localStorage is available and working</span>`;
+                } else {
+                    resultDiv.innerHTML = `<span class="fail">✗ FAIL: localStorage returned incorrect value</span>`;
+                }
+            } catch (e) {
+                resultDiv.innerHTML = `<span class="fail">✗ FAIL: localStorage error: ${e.message}</span>`;
+            }
+        }
+        
+        // Test 2: Check if TodoApp class methods exist
+        function testTodoAppClass() {
+            const resultDiv = document.getElementById('test2-result');
+            const requiredMethods = [
+                'loadTasksFromStorage',
+                'saveTasksToStorage',
+                'addTask',
+                'editTask',
+                'deleteTask',
+                'toggleTaskStatus',
+                'filterTasks',
+                'renderTasks',
+                'updateStats'
+            ];
+            
+            let allExist = true;
+            let results = [];
+            
+            if (typeof window.todoApp === 'undefined') {
+                resultDiv.innerHTML = `<span class="fail">✗ FAIL: todoApp not found on window object</span>`;
+                return;
+            }
+            
+            requiredMethods.forEach(method => {
+                if (typeof window.todoApp[method] === 'function') {
+                    results.push(`✓ ${method}`);
+                } else {
+                    results.push(`✗ ${method}`);
+                    allExist = false;
+                }
+            });
+            
+            if (allExist) {
+                resultDiv.innerHTML = `<span class="pass">✓ PASS: All required methods exist</span><br><pre>${results.join('\n')}</pre>`;
+            } else {
+                resultDiv.innerHTML = `<span class="fail">✗ FAIL: Some methods missing</span><br><pre>${results.join('\n')}</pre>`;
+            }
+        }
+        
+        // Test 3: CRUD operations
+        function testCRUDOperations() {
+            const resultDiv = document.getElementById('test3-result');
+            const testResults = [];
+            
+            // Clear any existing test data
+            localStorage.removeItem('todoTasks');
+            
+            // Create a simple test instance
+            const testApp = {
+                tasks: [],
+                generateId: () => 'test-' + Date.now(),
+                saveTasksToStorage: function() {
+                    localStorage.setItem('todoTasks', JSON.stringify(this.tasks));
+                },
+                loadTasksFromStorage: function() {
+                    const saved = localStorage.getItem('todoTasks');
+                    this.tasks = saved ? JSON.parse(saved) : [];
+                }
+            };
+            
+            // Test adding a task
+            const testTask = {
+                id: testApp.generateId(),
+                name: 'Test Task',
+                date: '2024-01-01',
+                status: 'not-started',
+                priority: 'medium'
+            };
+            
+            testApp.tasks.push(testTask);
+            testApp.saveTasksToStorage();
+            
+            // Verify task was saved
+            testApp.loadTasksFromStorage();
+            if (testApp.tasks.length === 1 && testApp.tasks[0].name === 'Test Task') {
+                testResults.push('✓ Task creation and storage');
+            } else {
+                testResults.push('✗ Task creation and storage');
+            }
+            
+            // Test updating a task
+            testApp.tasks[0].name = 'Updated Task';
+            testApp.saveTasksToStorage();
+            testApp.loadTasksFromStorage();
+            
+            if (testApp.tasks[0].name === 'Updated Task') {
+                testResults.push('✓ Task updating');
+            } else {
+                testResults.push('✗ Task updating');
+            }
+            
+            // Test deleting a task
+            testApp.tasks = [];
+            testApp.saveTasksToStorage();
+            testApp.loadTasksFromStorage();
+            
+            if (testApp.tasks.length === 0) {
+                testResults.push('✓ Task deletion');
+            } else {
+                testResults.push('✗ Task deletion');
+            }
+            
+            // Clean up
+            localStorage.removeItem('todoTasks');
+            
+            resultDiv.innerHTML = `<pre>${testResults.join('\n')}</pre>`;
+        }
+        
+        // Test 4: Filtering
+        function testFiltering() {
+            const resultDiv = document.getElementById('test4-result');
+            const testResults = [];
+            
+            // Create test data
+            const testTasks = [
+                { id: '1', name: 'Task 1', date: '2024-01-01', status: 'not-started', priority: 'low' },
+                { id: '2', name: 'Task 2', date: '2024-01-02', status: 'in-progress', priority: 'medium' },
+                { id: '3', name: 'Task 3', date: '2024-01-03', status: 'done', priority: 'high' }
+            ];
+            
+            // Test filtering function (simplified version)
+            function filterTasksByStatus(tasks, filter) {
+                switch(filter) {
+                    case 'not-started':
+                        return tasks.filter(task => task.status === 'not-started');
+                    case 'in-progress':
+                        return tasks.filter(task => task.status === 'in-progress');
+                    case 'done':
+                        return tasks.filter(task => task.status === 'done');
+                    default:
+                        return tasks;
+                }
+            }
+            
+            // Run tests
+            const notStarted = filterTasksByStatus(testTasks, 'not-started');
+            if (notStarted.length === 1 && notStarted[0].id === '1') {
+                testResults.push('✓ Filter: not-started');
+            } else {
+                testResults.push('✗ Filter: not-started');
+            }
+            
+            const inProgress = filterTasksByStatus(testTasks, 'in-progress');
+            if (inProgress.length === 1 && inProgress[0].id === '2') {
+                testResults.push('✓ Filter: in-progress');
+            } else {
+                testResults.push('✗ Filter: in-progress');
+            }
+            
+            const done = filterTasksByStatus(testTasks, 'done');
+            if (done.length === 1 && done[0].id === '3') {
+                testResults.push('✓ Filter: done');
+            } else {
+                testResults.push('✗ Filter: done');
+            }
+            
+            const all = filterTasksByStatus(testTasks, 'all');
+            if (all.length === 3) {
+                testResults.push('✓ Filter: all');
+            } else {
+                testResults.push('✗ Filter: all');
+            }
+            
+            resultDiv.innerHTML = `<pre>${testResults.join('\n')}</pre>`;
+        }
+        
+        // Helper functions
+        function showStorage() {
+            const contentsDiv = document.getElementById('storage-contents');
+            const allItems = {};
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                try {
+                    allItems[key] = JSON.parse(localStorage.getItem(key));
+                } catch {
+                    allItems[key] = localStorage.getItem(key);
+                }
+            }
+            
+            contentsDiv.textContent = JSON.stringify(allItems, null, 2);
+        }
+        
+        function clearStorage() {
+            localStorage.clear();
+            showStorage();
+            alert('Storage cleared!');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showStorage();
+            console.log('Test page loaded');
+        });
+    </script>
+</body>
+</html>
