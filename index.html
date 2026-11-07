@@ -1,41 +1,184 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>To do list</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <title>Todo List Manager</title>
   </head>
   <body>
-    <section class="section">
-      <h1 class="title">To do list</h1>
-      <form action="">
-        <label>Task name:</label>
-        <input type="text" id="input-text" placeholder="Enter task name..." />
-        <label>Date:</label>
-        <input type="date" id="input-date" />
-        <label>Status:</label>
-        <select name="" id="input-status">
-          <option value="not-started">Not started</option>
-          <option value="in-progress">In progress</option>
-          <option value="done">Done</option>
-        </select>
-        <input type="submit" id="btn" value="Add a new Todo" />
-      </form>
-      <label>List here:</label>
+    <div class="container">
+      <header class="header">
+        <h1 class="title"><i class="fas fa-tasks"></i> Todo List Manager</h1>
+        <p class="subtitle">Organize your tasks efficiently</p>
+      </header>
 
-      <div id="todoList"></div>
-      <div id="box1">
-        <p id="not-start">Not started</p>
+      <main class="main-content">
+        <section class="input-section card">
+          <h2><i class="fas fa-plus-circle"></i> Add New Task</h2>
+          <form id="todo-form">
+            <div class="form-group">
+              <label for="input-text"
+                ><i class="fas fa-pen"></i> Task Name</label
+              >
+              <input
+                type="text"
+                id="input-text"
+                placeholder="Enter task name..."
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="input-date"
+                ><i class="fas fa-calendar"></i> Due Date</label
+              >
+              <input type="date" id="input-date" required />
+            </div>
+
+            <div class="form-group">
+              <label for="input-status"
+                ><i class="fas fa-flag"></i> Status</label
+              >
+              <select id="input-status">
+                <option value="not-started">Not Started</option>
+                <option value="in-progress">In Progress</option>
+                <option value="done">Done</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="input-priority"
+                ><i class="fas fa-exclamation-circle"></i> Priority</label
+              >
+              <select id="input-priority">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+
+            <button type="submit" id="btn-add" class="btn btn-primary">
+              <i class="fas fa-plus"></i> Add Task
+            </button>
+            <button
+              type="button"
+              id="btn-update"
+              class="btn btn-secondary"
+              style="display: none"
+            >
+              <i class="fas fa-save"></i> Update Task
+            </button>
+            <button
+              type="button"
+              id="btn-cancel"
+              class="btn btn-outline"
+              style="display: none"
+            >
+              <i class="fas fa-times"></i> Cancel
+            </button>
+          </form>
+        </section>
+
+        <section class="filters-section card">
+          <h2><i class="fas fa-filter"></i> Filter Tasks</h2>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">
+              All Tasks
+            </button>
+            <button class="filter-btn" data-filter="not-started">
+              Not Started
+            </button>
+            <button class="filter-btn" data-filter="in-progress">
+              In Progress
+            </button>
+            <button class="filter-btn" data-filter="done">Done</button>
+            <button class="filter-btn" data-filter="high">High Priority</button>
+            <button class="filter-btn" data-filter="today">Due Today</button>
+          </div>
+          <div class="stats">
+            <span id="total-tasks">Total: 0</span>
+            <span id="not-started-count">Not Started: 0</span>
+            <span id="in-progress-count">In Progress: 0</span>
+            <span id="done-count">Done: 0</span>
+          </div>
+        </section>
+
+        <section class="tasks-section card">
+          <h2><i class="fas fa-list-check"></i> Your Tasks</h2>
+          <div class="tasks-container">
+            <div class="tasks-header">
+              <div class="task-header-item">Task Name</div>
+              <div class="task-header-item">Due Date</div>
+              <div class="task-header-item">Status</div>
+              <div class="task-header-item">Priority</div>
+              <div class="task-header-item">Actions</div>
+            </div>
+            <div id="todoList" class="tasks-list">
+              <!-- Tasks will be dynamically inserted here -->
+            </div>
+          </div>
+
+          <div class="empty-state" id="empty-state">
+            <i class="fas fa-clipboard-list fa-3x"></i>
+            <h3>No tasks yet</h3>
+            <p>Add your first task using the form above!</p>
+          </div>
+        </section>
+
+        <section class="storage-section card">
+          <h2><i class="fas fa-database"></i> Data Management</h2>
+          <div class="storage-controls">
+            <button id="btn-clear-all" class="btn btn-danger">
+              <i class="fas fa-trash"></i> Clear All Tasks
+            </button>
+            <button id="btn-export" class="btn btn-outline">
+              <i class="fas fa-download"></i> Export Tasks
+            </button>
+            <button id="btn-import" class="btn btn-outline">
+              <i class="fas fa-upload"></i> Import Tasks
+            </button>
+          </div>
+          <p class="storage-info">
+            <i class="fas fa-info-circle"></i> Your tasks are automatically
+            saved in your browser's local storage.
+          </p>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>
+          Todo List App &copy; 2023 | Created with
+          <i class="fas fa-heart"></i> using HTML, CSS & JavaScript
+        </p>
+        <p>Tasks stored locally in your browser</p>
+      </footer>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="import-modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2><i class="fas fa-upload"></i> Import Tasks</h2>
+        <p>Paste your exported tasks JSON data:</p>
+        <textarea
+          id="import-data"
+          placeholder="Paste JSON data here..."
+        ></textarea>
+        <div class="modal-buttons">
+          <button id="btn-confirm-import" class="btn btn-primary">
+            Import
+          </button>
+          <button id="btn-cancel-import" class="btn btn-outline">Cancel</button>
+        </div>
       </div>
-      <div id="box2">
-        <p id="in-prog">In progress</p>
-      </div>
-      <div id="box3">
-        <p id="done">Done</p>
-      </div>
-    </section>
+    </div>
+
+    <script src="javascript.js"></script>
   </body>
-  <script src="javascript.js"></script>
 </html>
